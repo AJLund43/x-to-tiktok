@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>TikTok connect</title></head>
+<body style="font-family:sans-serif;padding:2rem">
+<h2>Copy this code</h2>
+<textarea id="c" rows="4" cols="80" readonly></textarea>
+<script>
+  const p = new URLSearchParams(location.search);
+  document.getElementById('c').value = p.get('code') || ('Error: ' + (p.get('error_description') || 'no code'));
+</script>
+</body></html>

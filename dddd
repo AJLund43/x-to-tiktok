@@ -1,0 +1,36 @@
+yaml
+name: X to TikTok
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: x-to-tiktok
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - run: |
+          git config user.name "x-to-tiktok bot"
+          git config user.email "actions@users.noreply.github.com"
+      - run: python poster.py
+        env:
+          X_USERNAME: ${{ vars.X_USERNAME }}
+          X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+          TIKTOK_CLIENT_KEY: ${{ secrets.TIKTOK_CLIENT_KEY }}
+          TIKTOK_CLIENT_SECRET: ${{ secrets.TIKTOK_CLIENT_SECRET }}
+          TIKTOK_REFRESH_TOKENS: ${{ secrets.TIKTOK_REFRESH_TOKENS }}
+          PAGES_BASE_URL: ${{ vars.PAGES_BASE_URL }}
+          POST_MODE: ${{ vars.POST_MODE }}
